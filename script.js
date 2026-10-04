@@ -618,7 +618,7 @@ const MG = {
 
     brush: {
         N: [
-            ['boceto', '✏️️'],
+            ['boceto', '✏'],
             ['lineart', '🖊️'],
             ['colorear', '🎨'],
             ['sombreado', '🌗'],
@@ -1029,19 +1029,10 @@ function draw() {
         [0, 1].forEach(i => {
             const m = L.m[i], X = i ? W - 200 : 50;
 
-            g.fillStyle = S.pick == i
-                ? 'rgba(245,183,0,.5)'
-                : 'rgba(255,255,255,.12)';
-
-            g.fillRect(X, 130, 150, 190);
-
             spr('obj_' + m.k, X + 45, 145, 60, 60, '#f5b700', m.e);
             T(m.nm, X + 75, 235, 18, '#fff', 'center');
             wrap(m.t, X + 75, 262, 135, 20, 15, '#e8edf5', 'center');
         });
-
-        T(TX.pregunta.izq, 26, H - 14, 15, '#fff', 'left', '500');
-        T(TX.pregunta.der, W - 26, H - 14, 15, '#fff', 'right', '500');
 
         spr('personaje', P.x, P.y, P.w, P.h, '#f5b700', '🙂');
     }
@@ -1057,7 +1048,7 @@ function draw() {
                 60,
                 115 + i * 34,
                 19,
-                '#fff', // <-- CORregido aquí (antes decía $('#fff'))
+                '#fff',
                 'left',
                 '500'
             );
