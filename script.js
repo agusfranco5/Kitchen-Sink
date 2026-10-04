@@ -1103,23 +1103,6 @@ function draw() {
         T(TX.final.rejugar, W / 2, 428, 16, '#fff', 'center');
     }
 }
-{
-
-        wrap(
-            TX.final.concl[0] + S.ch.map(m => m.f).join(', ') + TX.final.concl[1],
-            W / 2,
-            250,
-            640,
-            28,
-            22,
-            '#e8edf5',
-            'center'
-        );
-
-        if (Math.floor(S.t * 2) % 2) {
-            T(TX.final.rejugar, W / 2, 400, 18, '#fff', 'center');
-        }
-    }
 
     if (S.fd) {
         g.globalAlpha = clamp(S.fd.a, 0, 1);
