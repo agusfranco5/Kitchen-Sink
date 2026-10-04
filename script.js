@@ -146,6 +146,15 @@ function drawInv() {
     }
 }
 
+/* ===== AUDIOS ===== */
+const sonidoBocado = new Audio("audio/nompou.mp3");
+sonidoBocado.volume = 0.7;
+
+const sonidoFail = new Audio("audio/fail.mp3");
+sonidoFail.volume = 0.6;
+
+const sonidoWin = new Audio("audio/win.mp3");
+sonidoWin.volume = 0.7;
 
 /* ===== MOVIMIENTO ===== */
 
@@ -180,6 +189,17 @@ function fin(ok, msg) {
     M.res = ok ? 1 : -1;
     M.rt = 1.4;
     say(msg);
+
+    if (ok) {
+        sonidoWin.currentTime = 0;
+        sonidoWin.play();
+ 
+        S.inv.push(ALL.find(m => m.id == M.id));
+        drawInv();
+    } else {
+        sonidoFail.currentTime = 0;
+        sonidoFail.play();
+    }
 
     if (ok) {
         S.inv.push(ALL.find(m => m.id == M.id));
@@ -241,6 +261,10 @@ const MG = {
                     const i = FOOD.indexOf(o.f);
 
                     if (i === this.indexEsperado && i < 3) {
+
+                        sonidoBocado.currentTime = 0;
+                        sonidoBocado.play(); 
+
                         this.it.splice(this.it.indexOf(o), 1);
                         this.got++;
                         this.indexEsperado++;
