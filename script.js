@@ -8,6 +8,7 @@
  gabinete_pc, motherboard, procesador, ram, nvme, fuente */
 
 const W = 800, H = 450;
+const PS = 54;  // tamaño del personaje
 const cv = document.getElementById('c'), g = cv.getContext('2d');
 
 const IM = {};
@@ -220,16 +221,21 @@ const FOOD = [
 const MG = {
     burger: {
         init() {
-            P = {x: 380, y: 200, w: 36, h: 36};
+            P = {x: 380, y: 200, w: PS, h: PS};
             this.got = 0;
             this.indexEsperado = 0;
 
+            // Elementos con hitboxes internas reducidas para ignorar los bordes transparentes
             this.it = FOOD.map((f, i) => ({
                 f,
                 x: R(60, 700),
                 y: R(90, 380),
                 vx: R(-50, 50),
-                vy: R(-50, 50)
+                vy: R(-50, 50),
+                ix: 8,
+                iy: 8,
+                iw: 24,
+                ih: 24
             }));
 
             for (const o of this.it) {
@@ -249,7 +255,9 @@ const MG = {
             }
 
             for (const o of this.it.slice()) {
-                if (ov(P, {x: o.x, y: o.y, w: 40, h: 40})) {
+                // Hitbox interna reducida para la comida
+                const hitBoxO = { x: o.x + o.ix, y: o.y + o.iy, w: o.iw, h: o.ih };
+                if (ov(P, hitBoxO)) {
                     const i = FOOD.indexOf(o.f);
 
                     if (i === this.indexEsperado && i < 3) {
@@ -272,7 +280,7 @@ const MG = {
 
         draw() {
             this.it.forEach(o => spr(o.f[0], o.x, o.y, 40, 40, '#fff', o.f[1]));
-            spr('personaje', P.x, P.y, 36, 36, '#f5b700', '🙂');
+            spr('personaje', P.x, P.y, PS, PS, '#f5b700', '🙂');
 
             g.fillStyle = 'rgba(255,255,255,.9)';
             g.fillRect(10, 10, 230, 56);
@@ -293,7 +301,7 @@ const MG = {
 
     pc: {
         init() {
-            P = {x: 100, y: 200, w: 36, h: 36};
+            P = {x: 100, y: 200, w: PS, h: PS};
 
             // Gabinete estático en el centro
             this.cabinet = { x: 280, y: 55, w: 260, h: 320 };
@@ -369,13 +377,13 @@ const MG = {
                 c.e
             ));
 
-            spr('personaje', P.x, P.y, 36, 36, '#f5b700', '🙂');
+            spr('personaje', P.x, P.y, PS, PS, '#f5b700', '🙂');
         }
     },
 
     star: {
         init() {
-            P = {x: 40, y: 200, w: 36, h: 36};
+            P = {x: 40, y: 200, w: PS, h: PS};
 
             this.b = [[260, 270], [400, 220], [540, 170]];
             this.o = [[220, 90], [600, 80], [290, 390], [560, 380]];
@@ -398,7 +406,7 @@ const MG = {
             this.h -= dt;
 
             this.b.forEach((s, i) => {
-                if (this.l.includes(i) || Math.hypot(s[0] - P.x - 18, s[1] - P.y - 18) > 26) return;
+                if (this.l.includes(i) || Math.hypot(s[0] - P.x - PS / 2, s[1] - P.y - PS / 2) > 26) return;
 
                 const L = this.l;
                 const ok = L.length == 0 ? i != 1 : L.length == 1 ? i == 1 : true;
@@ -434,7 +442,7 @@ const MG = {
                 j ? g.lineTo(...this.b[i]) : g.moveTo(...this.b[i])
             );
 
-            if (this.l.length && this.l.length < 3) g.lineTo(P.x + 18, P.y + 18);
+            if (this.l.length && this.l.length < 3) g.lineTo(P.x + PS / 2, P.y + PS / 2);
             g.stroke();
 
             if (M.res > 0) {
@@ -450,13 +458,13 @@ const MG = {
                 g.stroke();
             }
 
-            spr('personaje', P.x, P.y, 36, 36, '#f5b700', '🙂');
+            spr('personaje', P.x, P.y, PS, PS, '#f5b700', '🙂');
         }
     },
 
     bus: {
         init() {
-            P = {x: 50, y: 200, w: 36, h: 36};
+            P = {x: 50, y: 200, w: PS, h: PS};
 
             const C = 110, ox = 235, oy = 50;
 
@@ -529,8 +537,8 @@ const MG = {
         key(k) {
             if (M.res || this.bus >= 0 || k != ' ') return;
 
-            const x = Math.floor((P.x + 18 - this.ox) / this.C);
-            const y = Math.floor((P.y + 18 - this.oy) / this.C);
+            const x = Math.floor((P.x + PS / 2 - this.ox) / this.C);
+            const y = Math.floor((P.y + PS / 2 - this.oy) / this.C);
 
             if (x < 0 || x > 2 || y < 0 || y > 2) return;
 
@@ -570,8 +578,8 @@ const MG = {
 
         draw() {
             const C = this.C;
-            const hx = Math.floor((P.x + 18 - this.ox) / C);
-            const hy = Math.floor((P.y + 18 - this.oy) / C);
+            const hx = Math.floor((P.x + PS / 2 - this.ox) / C);
+            const hy = Math.floor((P.y + PS / 2 - this.oy) / C);
 
             for (let y = 0; y < 3; y++) {
                 for (let x = 0; x < 3; x++) {
@@ -636,13 +644,13 @@ const MG = {
                 );
             }
 
-            spr('personaje', P.x, P.y, 36, 36, '#f5b700', '🙂');
+            spr('personaje', P.x, P.y, PS, PS, '#f5b700', '🙂');
         }
     },
 
     brush: {
         N: [
-            ['boceto', '✏️️'],
+            ['boceto', '✏'],
             ['lineart', '🖊️'],
             ['colorear', '🎨'],
             ['sombreado', '🌗'],
@@ -652,7 +660,7 @@ const MG = {
         col: ['#9aa5b1', '#1d2433', '#e4572e', '#6a4c93', '#ffd166'],
 
         init() {
-            P = {x: 30, y: H - 90, w: 36, h: 36};
+            P = {x: 30, y: H - 90, w: PS, h: PS};
             this.n = 0;
             this.it = [];
 
@@ -718,7 +726,7 @@ const MG = {
                 T(n[2], o.x + 28, o.y + 74, 13, '#000', 'center');
             });
 
-            spr('personaje', P.x, P.y, 36, 36, '#f5b700', '🙂');
+            spr('personaje', P.x, P.y, PS, PS, '#f5b700', '🙂');
         }
     },
 
@@ -840,12 +848,12 @@ function enter() {
 
     if (st.t == 'q') {
         S.scr = 'q';
-        P = {x: W / 2 - 20, y: H / 2 - 20, w: 40, h: 40};
+        P = {x: W / 2 - 20, y: H / 2 - 20, w: PS, h: PS};
         say(TX.pregunta.ayuda);
     } else {
         S.scr = 'over';
         S.mi = STG.slice(0, S.i).filter(x => x.t == 'mg').length;
-        P = {x: 20, y: H / 2 - 20, w: 40, h: 40};
+        P = {x: 20, y: H / 2 - 20, w: PS, h: PS};
         S.sx = P.x;
         say(TX.mapa[S.mi]);
     }
@@ -953,7 +961,7 @@ function update(dt) {
                     M.exit = 1;
 
                     if (M.id == 'act') {
-                        P = {x: W / 2 - 18, y: H / 2 - 18, w: 36, h: 36};
+                        P = {x: W / 2 - 18, y: H / 2 - 18, w: PS, h: PS};
                     }
 
                     say(TX.salida);
@@ -1020,7 +1028,7 @@ function draw() {
             g.fillRect(W - 16, 0, 16, H);
 
             T('►', W - 80, H / 2 + 14, 44, '#f5b700');
-            spr('personaje', P.x, P.y, 36, 36, '#f5b700', '🙂');
+            spr('personaje', P.x, P.y, PS, PS, '#f5b700', '🙂');
         }
 
         else if (M.res) {
@@ -1053,19 +1061,10 @@ function draw() {
         [0, 1].forEach(i => {
             const m = L.m[i], X = i ? W - 200 : 50;
 
-            g.fillStyle = S.pick == i
-                ? 'rgba(245,183,0,.5)'
-                : 'rgba(255,255,255,.12)';
-
-            g.fillRect(X, 130, 150, 190);
-
             spr('obj_' + m.k, X + 45, 145, 60, 60, '#f5b700', m.e);
             T(m.nm, X + 75, 235, 18, '#fff', 'center');
             wrap(m.t, X + 75, 262, 135, 20, 15, '#e8edf5', 'center');
         });
-
-        T(TX.pregunta.izq, 26, H - 14, 15, '#fff', 'left', '500');
-        T(TX.pregunta.der, W - 26, H - 14, 15, '#fff', 'right', '500');
 
         spr('personaje', P.x, P.y, P.w, P.h, '#f5b700', '🙂');
     }
@@ -1081,7 +1080,7 @@ function draw() {
                 60,
                 115 + i * 34,
                 19,
-                '#fff', // <-- CORregido aquí (antes decía $('#fff'))
+                '#fff',
                 'left',
                 '500'
             );
