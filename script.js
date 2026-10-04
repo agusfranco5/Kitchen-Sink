@@ -188,14 +188,14 @@ function fin(ok, msg) {
 }
 
 const FOOD = [
-    ['hamburguesa', '🍔'],
-    ['papas', '🍟'],
-    ['bebida', '🥤'],
-    ['ensalada', '🥗'],
-    ['pizza', '🍕'],
-    ['pancho', '🌭'],
-    ['dona', '🍩'],
-    ['taco', '🌮']
+    ['hamburguesa'],
+    ['papas'],
+    ['bebida'],
+    ['ensalada'],
+    ['pizza'],
+    ['pancho'],
+    ['dona'],
+    ['taco']
 ];
 
 const MG = {
@@ -255,8 +255,16 @@ const MG = {
             g.fillRect(10, 10, 230, 56);
 
             T(TX.burger.comanda, 20, 30, 14);
-            [0, 1, 2].forEach(i => T(FOOD[i][1] + (i < this.got ? '✔' : '·'), 24 + i * 70, 56, 22, '#000'));
-        }
+            
+            [0, 1, 2].forEach(i => {
+                const x = 24 + i * 70;
+                // PNG del ítem de la comanda (atenuado hasta que se complete) 
+                g.globalAlpha = i < this.got ? 1 : .45;
+                spr(FOOD[i][0], x, 34, 28, 28, '#fff');           
+                g.globalAlpha = 1;
+                // marca de completado al lado del ícono
+                T(i < this.got ? '✔' : '·', x + 34, 56, 22, '#000');
+            });
     },
 
     pc: {
