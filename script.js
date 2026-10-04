@@ -203,6 +203,7 @@ const MG = {
         init() {
             P = {x: 380, y: 200, w: 36, h: 36};
             this.got = 0;
+            this.indexEsperado = 0;
 
             this.it = FOOD.map((f, i) => ({
                 f,
@@ -232,9 +233,10 @@ const MG = {
                 if (ov(P, {x: o.x, y: o.y, w: 40, h: 40})) {
                     const i = FOOD.indexOf(o.f);
 
-                    if (i < 3) {
+                    if (i === this.indexEsperado && i < 3) {
                         this.it.splice(this.it.indexOf(o), 1);
                         this.got++;
+                        this.indexEsperado++;
                         say(TX.burger.ok);
 
                         if (this.got == 3) fin(1, TX.burger.win);
@@ -604,7 +606,7 @@ const MG = {
 
     brush: {
         N: [
-            ['boceto', '✏️'],
+            ['boceto', '✏️️'],
             ['lineart', '🖊️'],
             ['colorear', '🎨'],
             ['sombreado', '🌗'],
@@ -1043,7 +1045,7 @@ function draw() {
                 60,
                 115 + i * 34,
                 19,
-                $('#fff'),
+                '#fff', // <-- CORregido aquí (antes decía $('#fff'))
                 'left',
                 '500'
             );
