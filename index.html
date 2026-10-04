@@ -34,157 +34,158 @@
         </div>
 
         <small>
-            Mover: flechas o WASD · R: reiniciar · Mouse: clic en los minijuegos ·
-            Imágenes: carpeta <b>img/</b> · Textos: bloque TX al inicio del código
+            Mover: flechas o WASD · Reiniciar: R 
         </small>
     </div>
 
-    <script id="textos">
-        /* ===== TEXTOS Y DIÁLOGOS =====
-         Todo lo que dice el juego está acá. Cambiá los textos entre comillas y listo. */
-        const TX = {
-            titulo: '¿Quién soy?',
 
-            /* diálogo del personaje en cada pantalla de caminata (una por minijuego, en orden) */
-            mapa: [
-                'Movete con las flechas o WASD. Caminá hacia la derecha: algo te está esperando.',
-                'Seguí caminando. El próximo objeto está más adelante.',
-                'Otra vez a caminar. Fijate qué hay del otro lado.',
-                'Seguí avanzando, no te frenes.',
-                'Ya casi: una pieza más.',
-                'Caminá hacia el objeto de la derecha.'
+<script id="textos">
+    /* ===== TEXTOS Y DIÁLOGOS ===== */
+
+    const TX = {
+        titulo: '¿Quién soy?',
+
+        /* diálogo del personaje en cada pantalla de caminata (una por minijuego, en orden) */
+        mapa: [
+            'Movete con las flechas o WASD. Hay algo esperando más adelante.',
+            'Todavía no sabemos a dónde vamos. Vos dale para adelante',
+            'Otra cosa más. ¿Qué tendrá que ver con vos?',
+            'No hace falta entender todo ahora. Seguí.',
+            'Seguí. A veces primero hacemos las cosas y después entendemos por qué.',
+            'Una última cosa. Después vemos si tienen sentido.'
+        ],
+
+        salida: 'Muy bien. Seguí caminando por la derecha.',
+        logrado: '¡Logrado!',
+        reintentar: 'Reintentá',
+
+        pregunta: {
+            ayuda: 'Caminá para el lado que más te represente.',
+            izq: '◄',
+            der: '►'
+        },
+
+        elegiste: 'Elegiste:',
+        finalGuia: 'Mirá todo lo que juntaste. ¿Te reconocés?',
+
+        final: {
+            titulo: 'Así te construiste',
+            concl: [
+                'Tu identidad se armó con ',
+                '. Pero no hay una sola forma de ser vos. Y todavía podés seguir construyendo. '
             ],
+            rejugar: 'ESPACIO o clic para volver a jugar'
+        },
 
-            salida: 'Muy bien. Para seguir, salí caminando por la derecha.',
-            logrado: '¡Logrado!',
-            reintentar: 'Reintentá',
+        /* nombre, pregunta y opciones de cada nivel (m[0] = izquierda, m[1] = derecha)
+           nm = nombre del objeto · t = texto de la opción · f = frase de la conclusión final · hi = ayuda del minijuego */
 
-            pregunta: {
-                ayuda: 'Ahora elegí: caminá libremente hasta la pared izquierda o la derecha.',
-                izq: '◄ pared izquierda',
-                der: 'pared derecha ►'
+        niveles: [
+            {
+                n: 'Nivel 1',
+                q: '¿Soy lo que hago?',
+                m: [
+                    {
+                        nm: 'Hamburguesa',
+                        t: 'Lo cotidiano y compartido',
+                        f: 'lo cotidiano y compartido',
+                        hi: 'Completá la comanda. No te distraigas.'
+                    },
+                    {
+                        nm: 'Computadora',
+                        t: 'Lo que armo con tecnología',
+                        f: 'lo que armás con tecnología',
+                        hi: 'Empujá cada pieza en su lugar.'
+                    }
+                ]
             },
 
-            elegiste: 'Elegiste:',
-            finalGuia: 'Mirá lo que construiste. ¿Te reconocés?',
-
-            final: {
-                titulo: 'Así te construiste',
-                concl: [
-                    'Tu identidad se armó con ',
-                    '. No sos una pieza sola: sos lo que elegís seguir construyendo.'
-                ],
-                rejugar: 'ESPACIO o clic para volver a jugar'
+            {
+                n: 'Nivel 2',
+                q: '¿Soy lo que quiero ser?',
+                m: [
+                    {
+                        nm: 'Estrellas',
+                        t: 'Mirar lejos y soñar',
+                        f: 'mirar lejos y soñar',
+                        hi: 'Armá la constelación de las tres marías.'
+                    },
+                    {
+                        nm: 'Colectivo',
+                        t: 'Ir al encuentro de otros',
+                        f: 'ir al encuentro de otros',
+                        hi: 'Hay que dejarle el camino libre. Apretá ESPACIO para cambiar la dirección del camino'
+                    }
+                ]
             },
 
-            /* nombre, pregunta y opciones de cada nivel (m[0] = izquierda, m[1] = derecha)
-               nm = nombre del objeto · t = texto de la opción · f = frase de la conclusión final · hi = ayuda del minijuego */
-            niveles: [
-                {
-                    n: 'Nivel 1',
-                    q: '¿Soy lo que hago?',
-                    m: [
-                        {
-                            nm: 'Hamburguesa',
-                            t: 'Lo cotidiano y compartido',
-                            f: 'lo cotidiano y compartido',
-                            hi: 'Juntá lo que pide la comanda y esquivá todo lo demás.'
-                        },
-                        {
-                            nm: 'Computadora',
-                            t: 'Lo que armo con tecnología',
-                            f: 'lo que armás con tecnología',
-                            hi: 'Empujá cada pieza hasta su lugar en la computadora.'
-                        }
-                    ]
-                },
-
-                {
-                    n: 'Nivel 2',
-                    q: '¿Soy lo que quiero ser?',
-                    m: [
-                        {
-                            nm: 'Estrellas',
-                            t: 'Mirar lejos y soñar',
-                            f: 'mirar lejos y soñar',
-                            hi: 'Tocá las tres estrellas del cinturón de Orión en orden, de punta a punta.'
-                        },
-                        {
-                            nm: 'Colectivo',
-                            t: 'Ir al encuentro de otros',
-                            f: 'ir al encuentro de otros',
-                            hi: 'Movete con las flechas, parate sobre un tramo y girá con la barra espaciadora para que pase el colectivo.'
-                        }
-                    ]
-                },
-
-                {
-                    n: 'Nivel 3',
-                    q: '¿Soy lo que me gusta hacer?',
-                    m: [
-                        {
-                            nm: 'Pincel',
-                            t: 'Crear con las manos',
-                            f: 'crear con las manos',
-                            hi: 'Tocá los pasos de un dibujo en el orden correcto para completar el lienzo.'
-                        },
-                        {
-                            nm: 'Actuación',
-                            t: 'Ponerme en la piel de otros',
-                            f: 'ponerte en la piel de otros',
-                            hi: 'Memorizá la secuencia y repetila con las flechas.'
-                        }
-                    ]
-                }
-            ],
-
-            /* mensajes dentro de cada minijuego */
-            burger: {
-                comanda: 'COMANDA',
-                ok: '¡Eso va en la comanda!',
-                win: '¡Comanda completa! Qué hambre.',
-                fail: 'Eso no estaba en la comanda. ¡Otra vez!'
-            },
-
-            pc: {
-                win: '¡Computadora lista! Prendió al primer intento.'
-            },
-
-            star: {
-                ok: '¡Una estrella! Seguí con la siguiente.',
-                win: '¡Ese es el cinturón de Orión: Tres Marías!',
-                fail: 'Esa todavía no: empezá por un extremo del cinturón.'
-            },
-
-            bus: {
-                entrada: '▶ entrada',
-                salida: 'salida ▶',
-                ok: '¡Camino libre! Ahí viene el colectivo.',
-                win: '¡Llegó a destino! Alguien va a subirse.'
-            },
-
-            brush: {
-                pasos: [
-                    'Boceto',
-                    'Lineart',
-                    'Colorear',
-                    'Sombreado',
-                    'Iluminación'
-                ],
-                ok: '¡Bien! El lienzo avanza.',
-                win: 'Obra terminada. Se nota tu mano.'
-            },
-
-            act: {
-                mira: 'Mirá bien la secuencia...',
-                turno: 'Tu turno: repetí con las flechas.',
-                observa: 'Observá...',
-                progreso: 'Progreso:',
-                win: '¡Bravo! Aprendiste tu parlamento.',
-                fail: 'Te equivocaste de paso. Mirá de nuevo.'
+            {
+                n: 'Nivel 3',
+                q: '¿Soy lo que me gusta hacer?',
+                m: [
+                    {
+                        nm: 'Pincel',
+                        t: 'Crear con las manos',
+                        f: 'crear con las manos',
+                        hi: 'Empezá por el boceto. Después vemos qué aparece.'
+                    },
+                    {
+                        nm: 'Actuación',
+                        t: 'Ponerme en la piel de otros',
+                        f: 'ponerte en la piel de otros',
+                        hi: 'Mirá bien. Después te toca a vos.'
+                    }
+                ]
             }
-        };
-    </script>
+        ],
+
+        /* mensajes dentro de cada minijuego */
+        burger: {
+            comanda: 'COMANDA',
+            ok: 'Eso sí. Vas entendiendo.',
+            win: '¡Comanda completa!',
+            fail: 'Bueno... eso también era comida. Pero no era lo que buscábamos.'
+        },
+
+        pc: {
+            win: '¡Computadora lista!'
+        },
+
+        star: {
+            ok: 'Una estrella. Seguí con la siguiente.',
+            win: '¡Listo!',
+            fail: 'No era por ahí. Probá de nuevo.'
+        },
+
+        bus: {
+            entrada: '▶ entrada',
+            salida: 'salida ▶',
+            ok: 'Camino libre. Ahí viene el colectivo.',
+            win: '¡Llegó el 101!',
+        },
+
+        brush: {
+            pasos: [
+                'Boceto',
+                'Lineart',
+                'Colorear',
+                'Sombreado',
+                'Iluminación'
+            ],
+            ok: 'Alta naranja. Seguí así.',
+            win: '¡Obra terminada!',
+        },
+
+        act: {
+            mira: 'Mirá bien la secuencia...',
+            turno: 'Tu turno: repetí con las flechas.',
+            observa: 'Observá...',
+            progreso: 'Progreso:',
+            win: '¡Bravo!',
+            fail: 'Te equivocaste de paso. Mirá de nuevo.'
+        }
+    };
+</script>
 
     <script src="script.js"></script>
 </body>
