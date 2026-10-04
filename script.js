@@ -140,7 +140,7 @@ function drawInv() {
         el.insertAdjacentHTML(
             'beforeend',
             '<div class="slot" title="' + (m ? m.nm : '') + '">' +
-            (m ? m.e + '<img src="img/inv_' + m.k + '.png" onerror="this.remove()">' : '') +
+            (m ? '<img src="img/inv_' + m.k + '.png" onerror="this.remove()">' : '') +
             '</div>'
         );
     }
@@ -563,8 +563,8 @@ const MG = {
                 }
             }
 
-            T(TX.bus.entrada, this.ox - 100, this.pts[0][1] + 5, 14, '#1d2433');
-            T(TX.bus.salida, this.ox + 3 * this.C + 8, this.pts[0][1] + 5, 14, '#1d2433');
+            T(TX.bus.entrada, this.ox - 100, this.pts[0][1] + 5, 14, '#000000');
+            T(TX.bus.salida, this.ox + 3 * this.C + 8, this.pts[0][1] + 5, 14, '#000000');
 
             if (this.bus >= 0 && !M.res) {
                 let d = this.bus, i = 0;

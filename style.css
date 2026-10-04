@@ -78,13 +78,11 @@ canvas {
     flex: none;
     width: 68px;
     height: 68px;
-    background: var(--acc);
     border-radius: 6px;
 
     display: grid;
     place-items: center;
 
-    font-size: 36px;
     overflow: hidden;
 }
 
@@ -123,8 +121,6 @@ canvas {
 
     display: grid;
     place-items: center;
-
-    font-size: 24px;
 }
 
 small {
