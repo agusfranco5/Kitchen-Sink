@@ -283,13 +283,13 @@ const MG = {
                 {k: 'fuente', e: '🔌', x: 320, y: 229, w: 136, h: 60}
             ];
 
-            // Componentes arrastrables dispersos por fuera del gabinete
+            // Componentes con hitboxes internas bastante más chicas y centradas
             this.c = [
-                {s: 0, x: 550, y: 70, w: 140, h: 140},
-                {s: 1, x: 580, y: 240, w: 45, h: 45},
-                {s: 2, x: 180, y: 70, w: 20, h: 65},
-                {s: 3, x: 170, y: 200, w: 50, h: 18},
-                {s: 4, x: 140, y: 310, w: 140, h: 60}
+                {s: 0, x: 550, y: 70, w: 140, h: 140, ix: 35, iy: 35, iw: 70, ih: 70},
+                {s: 1, x: 580, y: 240, w: 45, h: 45, ix: 10, iy: 10, iw: 25, ih: 25},
+                {s: 2, x: 180, y: 70, w: 20, h: 65, ix: 6, iy: 12, iw: 8, ih: 41},
+                {s: 3, x: 170, y: 200, w: 50, h: 18, ix: 10, iy: 4, iw: 30, ih: 10},
+                {s: 4, x: 140, y: 310, w: 140, h: 60, ix: 25, iy: 15, iw: 90, ih: 30}
             ].map(c => ({
                 ...c,
                 k: this.sl[c.s].k,
@@ -302,7 +302,11 @@ const MG = {
             const [dx, dy] = mv(P, dt, 200);
 
             for (const c of this.c) {
-                if (c.lock || !ov(P, c)) continue;
+                if (c.lock) continue;
+                
+                // Hitbox interna reducida para ignorar los bordes transparentes
+                const hitBoxC = { x: c.x + c.ix, y: c.y + c.iy, w: c.iw, h: c.ih };
+                if (!ov(P, hitBoxC)) continue;
 
                 c.x = clamp(c.x + dx, 0, W - c.w);
                 c.y = clamp(c.y + dy, 0, H - c.h);
