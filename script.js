@@ -204,12 +204,17 @@ const MG = {
             this.got = 0;
             this.indexEsperado = 0;
 
+            // Elementos con hitboxes internas reducidas para ignorar los bordes transparentes
             this.it = FOOD.map((f, i) => ({
                 f,
                 x: R(60, 700),
                 y: R(90, 380),
                 vx: R(-50, 50),
-                vy: R(-50, 50)
+                vy: R(-50, 50),
+                ix: 8,
+                iy: 8,
+                iw: 24,
+                ih: 24
             }));
 
             for (const o of this.it) {
@@ -229,7 +234,9 @@ const MG = {
             }
 
             for (const o of this.it.slice()) {
-                if (ov(P, {x: o.x, y: o.y, w: 40, h: 40})) {
+                // Hitbox interna reducida para la comida
+                const hitBoxO = { x: o.x + o.ix, y: o.y + o.iy, w: o.iw, h: o.ih };
+                if (ov(P, hitBoxO)) {
                     const i = FOOD.indexOf(o.f);
 
                     if (i === this.indexEsperado && i < 3) {
