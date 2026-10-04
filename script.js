@@ -5,7 +5,8 @@
  bg_burger, bg_pc, bg_star, bg_bus, bg_brush, bg_act,
  inv_hamburguesa, inv_pc, inv_estrellas, inv_colectivo, inv_pincel, inv_actuacion,
  hamburguesa, papas, bebida, ensalada, pizza, pancho, dona, taco,
- monitor, gabinete, teclado, colectivo, paso_boceto, paso_lineart, paso_colorear, paso_sombreado, paso_iluminacion, capa_boceto, capa_lineart, capa_colorear, capa_sombreado, capa_iluminacion (las 5 capas del dibujo, mismo tamaño, PNG con transparencia) */
+ monitor, gabinete, teclado, colectivo, paso_boceto, paso_lineart, paso_colorear, paso_sombreado, paso_iluminacion, capa_boceto, capa_lineart, capa_colorear, capa_sombreado, capa_iluminacion,
+ gabinete_pc, motherboard, procesador, ram, nvme, fuente */
 
 const W = 800, H = 450;
 const cv = document.getElementById('c'), g = cv.getContext('2d');
@@ -258,18 +259,27 @@ const MG = {
 
     pc: {
         init() {
-            P = {x: 200, y: 200, w: 36, h: 36};
+            P = {x: 100, y: 200, w: 36, h: 36};
 
+            // Gabinete estático en el centro
+            this.cabinet = { x: 280, y: 55, w: 260, h: 320 };
+
+            // Zonas objetivo dentro del gabinete
             this.sl = [
-                {k: 'monitor', e: '🖥️', x: 430, y: 40, w: 220, h: 130},
-                {k: 'gabinete', e: '🗄️', x: 690, y: 60, w: 80, h: 150},
-                {k: 'teclado', e: '⌨️', x: 430, y: 200, w: 220, h: 50}
+                {k: 'motherboard', e: '🧩', x: 330, y: 110, w: 140, h: 140},
+                {k: 'procesador', e: '🔲', x: 379, y: 133, w: 45, h: 45},
+                {k: 'ram', e: '📊', x: 415, y: 135, w: 20, h: 65},
+                {k: 'nvme', e: '⚡', x: 365, y: 195, w: 50, h: 18},
+                {k: 'fuente', e: '🔌', x: 320, y: 229, w: 136, h: 60}
             ];
 
+            // Componentes arrastrables dispersos por fuera del gabinete
             this.c = [
-                {s: 0, x: 20, y: 20, w: 220, h: 130},
-                {s: 1, x: 250, y: 290, w: 80, h: 150},
-                {s: 2, x: 60, y: 350, w: 220, h: 50}
+                {s: 0, x: 550, y: 70, w: 140, h: 140},
+                {s: 1, x: 580, y: 240, w: 45, h: 45},
+                {s: 2, x: 180, y: 70, w: 20, h: 65},
+                {s: 3, x: 170, y: 200, w: 50, h: 18},
+                {s: 4, x: 140, y: 310, w: 140, h: 60}
             ].map(c => ({
                 ...c,
                 k: this.sl[c.s].k,
@@ -300,14 +310,17 @@ const MG = {
         },
 
         draw() {
-            this.sl.forEach(s => {
-                g.setLineDash([8, 6]);
-                g.strokeStyle = '#fff';
-                g.lineWidth = 3;
-                g.strokeRect(s.x, s.y, s.w, s.h);
-                g.setLineDash([]);
-            });
+            // Dibujar Gabinete usando spr
+            spr('gabinete_pc', this.cabinet.x, this.cabinet.y, this.cabinet.w, this.cabinet.h, '#222938', '🖥️');
 
+            // Tapa lateral de vidrio translúcida o detalle frontal
+            g.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            g.fillRect(this.cabinet.x + 10, this.cabinet.y + 10, this.cabinet.w - 20, this.cabinet.h - 20);
+
+            // Título o marca del gabinete
+            T('GABINETE', this.cabinet.x + this.cabinet.w / 2, this.cabinet.y + 30, 12, '#718096', 'center');
+
+            // Dibujar componentes (piezas del puzzle)
             this.c.forEach(c => spr(
                 c.k,
                 c.x,
@@ -1030,7 +1043,7 @@ function draw() {
                 60,
                 115 + i * 34,
                 19,
-                '#fff',
+                $('#fff'),
                 'left',
                 '500'
             );
