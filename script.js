@@ -200,11 +200,6 @@ function fin(ok, msg) {
         sonidoFail.currentTime = 0;
         sonidoFail.play();
     }
-
-    if (ok) {
-        S.inv.push(ALL.find(m => m.id == M.id));
-        drawInv();
-    }
 }
 
 const FOOD = [
