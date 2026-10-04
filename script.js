@@ -1046,21 +1046,40 @@ function draw() {
     }
 
     else {
-        bgi('final', '#1d2433');
+    bgi('final', '#1d2433');
 
-        T(TX.final.titulo, W / 2, 60, 44, '#f5b700', 'center', '800');
+    T(TX.final.titulo, W / 2, 55, 44, '#f5b700', 'center', '800');
 
-        S.ch.forEach((m, i) => {
-            T(
-                LV[i].q + '  →  ' + m.e + ' ' + m.nm,
-                60,
-                115 + i * 34,
-                19,
-                '#fff',
-                'left',
-                '500'
-            );
-        });
+    // objetos elegidos (PNG obj_...)
+    S.ch.forEach((m, i) => {
+        const cx = W / 2 + (i - 1) * 170;
+
+        spr('obj_' + m.k, cx - 40, 80, 80, 80, '#f5b700', m.e);
+        T(m.nm, cx, 180, 16, '#e8edf5', 'center', '500');
+    });
+
+    // personaje transformado
+    spr('personaje_rojo', W / 2 - 40, 195, 80, 80, '#e4572e', '🙂');
+
+    wrap(
+        TX.final.concl[0] + S.ch.map(m => m.f).join(', ') + TX.final.concl[1],
+        W / 2,
+        315,
+        640,
+        26,
+        21,
+        '#e8edf5',
+        'center'
+    );
+
+    // créditos
+    T(TX.final.nombres, W / 2, 395, 16, '#f5b700', 'center', '500');
+
+    if (Math.floor(S.t * 2) % 2) {
+        T(TX.final.rejugar, W / 2, 428, 16, '#fff', 'center');
+    }
+}
+{
 
         wrap(
             TX.final.concl[0] + S.ch.map(m => m.f).join(', ') + TX.final.concl[1],
