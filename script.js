@@ -3,7 +3,6 @@
  inicio, fondo_mapa, fondo_pregunta, final, personaje, guia,
  obj_hamburguesa, obj_pc, obj_estrellas, obj_colectivo, obj_pincel, obj_actuacion,
  bg_burger, bg_pc, bg_star, bg_bus, bg_brush, bg_act,
- inv_hamburguesa, inv_pc, inv_estrellas, inv_colectivo, inv_pincel, inv_actuacion,
  hamburguesa, papas, bebida, ensalada, pizza, pancho, dona, taco,
  monitor, gabinete, teclado, colectivo, paso_boceto, paso_lineart, paso_colorear, paso_sombreado, paso_iluminacion, capa_boceto, capa_lineart, capa_colorear, capa_sombreado, capa_iluminacion,
  gabinete_pc, motherboard, procesador, ram, nvme, fuente */
@@ -140,7 +139,7 @@ function drawInv() {
         el.insertAdjacentHTML(
             'beforeend',
             '<div class="slot" title="' + (m ? m.nm : '') + '">' +
-            (m ? '<img src="img/inv_' + m.k + '.png" onerror="this.remove()">' : '') +
+            (m ? '<img src="img/obj_' + m.k + '.png" onerror="this.remove()">' : '') +
             '</div>'
         );
     }
