@@ -205,12 +205,17 @@ const MG = {
             this.got = 0;
             this.indexEsperado = 0;
 
+            // Elementos con hitboxes internas reducidas para ignorar los bordes transparentes
             this.it = FOOD.map((f, i) => ({
                 f,
                 x: R(60, 700),
                 y: R(90, 380),
                 vx: R(-50, 50),
-                vy: R(-50, 50)
+                vy: R(-50, 50),
+                ix: 8,
+                iy: 8,
+                iw: 24,
+                ih: 24
             }));
 
             for (const o of this.it) {
@@ -230,7 +235,9 @@ const MG = {
             }
 
             for (const o of this.it.slice()) {
-                if (ov(P, {x: o.x, y: o.y, w: 40, h: 40})) {
+                // Hitbox interna reducida para la comida
+                const hitBoxO = { x: o.x + o.ix, y: o.y + o.iy, w: o.iw, h: o.ih };
+                if (ov(P, hitBoxO)) {
                     const i = FOOD.indexOf(o.f);
 
                     if (i === this.indexEsperado && i < 3) {
@@ -619,7 +626,7 @@ const MG = {
 
     brush: {
         N: [
-            ['boceto', '✏️️'],
+            ['boceto', '✏'],
             ['lineart', '🖊️'],
             ['colorear', '🎨'],
             ['sombreado', '🌗'],
@@ -1030,19 +1037,10 @@ function draw() {
         [0, 1].forEach(i => {
             const m = L.m[i], X = i ? W - 200 : 50;
 
-            g.fillStyle = S.pick == i
-                ? 'rgba(245,183,0,.5)'
-                : 'rgba(255,255,255,.12)';
-
-            g.fillRect(X, 130, 150, 190);
-
             spr('obj_' + m.k, X + 45, 145, 60, 60, '#f5b700', m.e);
             T(m.nm, X + 75, 235, 18, '#fff', 'center');
             wrap(m.t, X + 75, 262, 135, 20, 15, '#e8edf5', 'center');
         });
-
-        T(TX.pregunta.izq, 26, H - 14, 15, '#fff', 'left', '500');
-        T(TX.pregunta.der, W - 26, H - 14, 15, '#fff', 'right', '500');
 
         spr('personaje', P.x, P.y, P.w, P.h, '#f5b700', '🙂');
     }
@@ -1058,7 +1056,7 @@ function draw() {
                 60,
                 115 + i * 34,
                 19,
-                '#fff', // <-- CORregido aquí (antes decía $('#fff'))
+                '#fff',
                 'left',
                 '500'
             );
